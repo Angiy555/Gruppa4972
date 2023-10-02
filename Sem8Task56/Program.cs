@@ -1,8 +1,6 @@
-﻿//Задание 52
-/*Задайте двумерный массив из целых чисел.
-Найдите среднее арифметическое элементов в каждом
-столбце.
-*/
+﻿//Задание 56
+/* Задайте прямоугольный двумерный массив. Напишите программу, 
+которая будет находить строку с наименьшей суммой элементов.*/
 //Вводим данные
 int ReadData(string msg)
 {
@@ -22,16 +20,10 @@ void PrintMatrix (int[,] matrix)
         Console.WriteLine();
     }
 }
-//Печатаем одномерный массив
-void PrintArray(double[] arr)
+//Печатаем сообщение
+void PrintResult(string msg)
 {
-    
-    for(int i = 0; i < arr.Length; i ++)
-    {
-        Console.Write(arr[i] + "\t ");
-    }
-    
-    System.Console.WriteLine();
+    Console.WriteLine(msg);
 }
 //Заполняем матрицу случайными числами
 int[,] FillMatrixGen(int countRow, int countColumn, int downBorder, int topBorder)
@@ -47,24 +39,29 @@ int[,] FillMatrixGen(int countRow, int countColumn, int downBorder, int topBorde
     }
     return matrix;
 }
-//Поиск средних значений в столбце
-double[] AveragesInColumn(int [,] matrix)
+//Поиск строки с наименьшей суммой
+int MinSumRow(int[,] matrix)
 {
-
-    double[] res = new double[matrix.GetLength(1)];
-    double sum = 0;
-    
-    for(int i = 0; i < matrix.GetLength(1); i++)
+    int[] sum = new int[matrix.GetLength(0)];
+    int minSum = 0;
+    int x = 0;
+    for(int i = 0; i < matrix.GetLength(0); i++)
     {
-        for(int j = 0; j < matrix.GetLength(0); j++)
+        for(int j = 0; j < matrix.GetLength(1); j++)
         {
-            sum += matrix[j, i];            
-        }
-        
-        res[i] = sum/matrix.GetLength(0);
-        sum = 0;
+            sum[i] += matrix[i, j];
+        }        
     }
-     return res;
+    minSum = sum[0];
+    for(int i = 1; i < sum.Length; i++)
+    {        
+        if(minSum > sum[i])
+        {
+            minSum = sum[i];
+            x = i + 1;
+        }
+    }    
+    return x;
 }
 
 //Выводим решение
@@ -75,5 +72,6 @@ int column = ReadData("Введите номер столбца: ");
 int [,] mtrx = FillMatrixGen(row, column, 1, 100);
 PrintMatrix(mtrx);
 Console.WriteLine();
-double[] array = AveragesInColumn(mtrx);
-PrintArray(array);
+int x = MinSumRow(mtrx);
+
+PrintResult("Строка с минимальной сумой: " + x);
